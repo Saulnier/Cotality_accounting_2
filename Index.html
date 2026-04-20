@@ -1,1 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Cotality — Corporate Accounting</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --primary: #0A1628; --primary-light: #E8EEF6;
+  --accent: #00B8A0; --accent-dark: #008F7C;
+  --bg: #F5F6F8; --white: #FFFFFF;
+  --text: #1A202C; --text-muted: #6B7280; --border: #E2E8F0;
+  --green: #1A7A4A; --green-light: #EAF4EE;
+  --amber: #B45309; --amber-light: #FEF3C7;
+  --red: #B91C1C; --red-light: #FEE2E2;
+  --radius: 12px; --shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: 20px 16px; }
+.wrap { max-width: 860px; margin: 0 auto; }
+.header { background: linear-gradient(135deg, var(--primary) 0%, #1A3A5C 100%); color: white; border-radius: var(--radius); padding: 20px 26px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; box-shadow: var(--shadow); }
+.header-left { display: flex; align-items: center; gap: 14px; }
+.logo { width: 42px; height: 42px; background: var(--accent); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.72rem; color: var(--primary); flex-shrink: 0; }
+.brand { font-size: 1.15rem; font-weight: 700; }
+.brand-sub { font-size: 0.73rem; opacity: 0.7; margin-top: 2px; }
+.header-right { font-size: 0.72rem; opacity: 0.65; text-align: right; line-height: 1.7; }
+.ticket { background: linear-gradient(135deg, #2D5A8E 0%, var(--accent-dark) 100%); color: white; border-radius: var(--radius); padding: 16px 26px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; box-shadow: var(--shadow); }
+.ticket-lbl { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.75; margin-bottom: 3px; }
+.ticket-num { font-size: 1.7rem; font-weight: 800; letter-spacing: -0.5px; }
+.ticket-stats { display: flex; gap: 10px; flex-wrap: wrap; }
+.t-stat { background: rgba(255,255,255,0.15); padding: 6px 14px; border-radius: 8px; text-align: center; }
+.t-stat .sv { font-size: 0.82rem; font-weight: 700; }
+.t-stat .sl { font-size: 0.62rem; opacity: 0.75; text-transform: uppercase; letter-spacing: 0.4px; }
+.info-alert { background: var(--primary-light); border-left: 4px solid var(--primary); padding: 11px 16px; border-radius: var(--radius); font-size: 0.83rem; color: var(--primary); margin-bottom: 14px; }
+.info-alert strong { font-weight: 600; }
+.card { background: var(--white); border-radius: var(--radius); padding: 22px 24px; margin-bottom: 14px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+.card-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-dark); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+label { display: block; font-size: 0.7rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 5px; }
+input, select { width: 100%; border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 13px; font-family: 'Inter', sans-serif; font-size: 0.9rem; color: var(--text); background: var(--white); margin-bottom: 14px; transition: border-color 0.15s; outline: none; }
+input:focus, select:focus { border-color: var(--accent); }
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+@media(max-width:600px){ .g2,.g3{ grid-template-columns:1fr; } }
+.sec { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-dark); margin: 14px 0 12px; display: flex; align-items: center; gap: 8px; }
+.sec::after { content:''; flex:1; height:1px; background: var(--border); }
+.badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px; border-radius: 999px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px; }
+.badge-active { background: var(--green-light); color: var(--green); }
+.badge-pending { background: var(--amber-light); color: var(--amber); }
+.badge-partial { background: var(--amber-light); color: var(--amber); }
+.billing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px,1fr)); gap: 8px; margin-bottom: 16px; }
+.billing-sys { background: var(--bg); border: 1.5px solid var(--border); border-radius: 8px; padding: 9px 8px; text-align: center; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all 0.15s; }
+.billing-sys:hover { border-color: var(--accent); color: var(--accent-dark); }
+.billing-sys.matched { background: #E6F7F5; border-color: var(--accent); color: var(--accent-dark); }
+.jira-btn { background: var(--primary); color: white; border: none; border-radius: 8px; padding: 11px 22px; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: background 0.15s; display: inline-flex; align-items: center; gap: 8px; }
+.jira-btn:hover { background: #1A3A5C; }
+.toast-cont { position: fixed; top: 18px; right: 18px; z-index: 999; }
+.toast { background: var(--primary); color: white; padding: 10px 16px; border-radius: 8px; box-shadow: var(--shadow); margin-bottom: 8px; opacity: 0; transform: translateY(-6px); transition: all 0.2s; font-size: 0.82rem; font-weight: 500; }
+.toast.show { opacity: 1; transform: translateY(0); }
 
+/* Past due alert banner */
+.past-due-banner { background: var(--red-light); border-left: 4px solid var(--red); padding: 11px 16px; border-radius: var(--radius); font-size: 0.83rem; color: var(--red); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.past-due-banner strong { font-weight: 700; }
+
+/* Balance summary row */
+.balance-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+.balance-chip { flex: 1; min-width: 120px; background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px; padding: 12px 16px; }
+.balance-chip .bc-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); margin-bottom: 4px; }
+.balance-chip .bc-value { font-size: 1.05rem; font-weight: 700; color: var(--text); }
+.balance-chip.danger .bc-value { color: var(--red); }
+.balance-chip.warn .bc-value { color: var(--amber); }
+</style>
+</head>
+<body>
+<div class="toast-cont" id="tc"></div>
+<div class="wrap">
+
+  <div class="header">
+    <div class="header-left">
+      <div class="logo">CTY</div>
+      <div><div class="brand">Cotality</div><div class="brand-sub">Corporate Accounting</div></div>
+    </div>
+    <div class="header-right"><br></div>
+  </div>
+
+  <div class="info-alert"><strong>ℹ️ Note:</strong> Identity verification, call recording, and transcription are handled automatically by Genesys Cloud before the agent connects.</div>
+
+  <div class="past-due-banner">⚠️ <strong>Past Due Alert:</strong> This account has a past due balance of <strong>$7,450.00</strong> — 45 days overdue.</div>
+
+  <div class="ticket">
+    <div><div class="ticket-lbl">Case Ticket</div><div class="ticket-num">#CA-20847</div></div>
+    <div class="ticket-stats">
+      <div class="t-stat"><div class="sv">Open</div><div class="sl">Status</div></div>
+      <div class="t-stat"><div class="sv">Billing</div><div class="sl">Category</div></div>
+      <div class="t-stat"><div class="sv">Apr 20, 2026</div><div class="sl">Date</div></div>
+    </div>
+  </div>
+
+  <!-- Account Info -->
+  <div class="card">
+    <div class="card-title">Customer Account Information</div>
+    <div class="g3">
+      <div><label>First Name</label><input id="fn" value="Tony"></div>
+      <div><label>Last Name</label><input id="ln" value="Smith"></div>
+      <div><label>Account #</label><input id="acctNum" value="ACC-70012"></div>
+    </div>
+    <div class="g2">
+      <div><label>Email</label><input id="em" value="alex.johnson@email.com"></div>
+      <div><label>Phone</label><input id="ph" value="303-555-5555"></div>
+    </div>
+    <div>
+      <label>Address</label>
+      <input id="addr" value="400 Spectrum Center Dr, Irvine, CA 92618">
+    </div>
+    <div class="g3">
+      <div>
+        <label>Account Status</label>
+        <select id="acctStatus" onchange="updateBadge()">
+          <option value="active">Active</option>
+          <option value="partial" selected>Partial</option>
+          <option value="pending">Pending</option>
+          <option value="hold">On Hold</option>
+        </select>
+      </div>
+      <div><label>Client / System ID</label><input id="acctId" value="3"></div>
+      <div><label>Business Unit</label><input id="bizUnit" value="Commercial Real Estate"></div>
+    </div>
+    <div id="badgeCont"></div>
+  </div>
+
+  <!-- Billing -->
+  <div class="card">
+    <div class="card-title">Billing System</div>
+    <div class="sec">Matched</div>
+    <div class="billing-grid" id="billingGrid">
+      <div class="billing-sys" onclick="selectBilling(this)">SAP FICO</div>
+      <div class="billing-sys" onclick="selectBilling(this)">NetSuite</div>
+      <div class="billing-sys matched" onclick="selectBilling(this)">Oracle AR</div>
+      <div class="billing-sys" onclick="selectBilling(this)">Cotality Enterprise Billing</div>
+      <div class="billing-sys" onclick="selectBilling(this)">Cotality Subscription Billing</div>
+      <div class="billing-sys" onclick="selectBilling(this)">Cotality Consumption Billing</div>
+      <div class="billing-sys" onclick="selectBilling(this)">Cotality Services Billing</div>
+      <div class="billing-sys" onclick="selectBilling(this)">Cotality Partner Billing</div>
+      <div class="billing-sys" onclick="selectBilling(this)">Cotality Legacy Accounts Billing</div>
+    </div>
+    <a class="jira-btn" href="https://www.atlassian.com/software/jira?referer=jira.com" target="_blank" rel="noopener noreferrer">🔗 Create Jira Ticket</a>
+  </div>
+
+  <!-- Balance & Payment -->
+  <div class="card">
+    <div class="card-title">Balance &amp; Payment Summary</div>
+    <div class="balance-row">
+      <div class="balance-chip">
+        <div class="bc-label">Total Balance</div>
+        <div class="bc-value">$12,450.00</div>
+      </div>
+      <div class="balance-chip warn">
+        <div class="bc-label">Last Payment</div>
+        <div class="bc-value">$5,000.00</div>
+      </div>
+      <div class="balance-chip">
+        <div class="bc-label">Last Payment Date</div>
+        <div class="bc-value">Mar 28, 2026</div>
+      </div>
+      <div class="balance-chip danger">
+        <div class="bc-label">Past Due Amount</div>
+        <div class="bc-value">$7,450.00</div>
+      </div>
+      <div class="balance-chip danger">
+        <div class="bc-label">Days Past Due</div>
+        <div class="bc-value">45 days</div>
+      </div>
+    </div>
+
+    <div class="g3">
+      <div><label>Total Balance</label><input id="balance" value="$12,450.00"></div>
+      <div><label>Last Payment Date</label><input id="lastPayDate" value="2026-03-28"></div>
+      <div><label>Last Payment Amount</label><input id="lastPayAmt" value="$5,000.00"></div>
+    </div>
+    <div class="g3">
+      <div>
+        <label>Past Due</label>
+        <select id="pastDue">
+          <option value="no">No</option>
+          <option value="yes" selected>Yes</option>
+        </select>
+      </div>
+      <div><label>Past Due Amount</label><input id="pastDueAmt" value="$7,450.00"></div>
+      <div><label>Past Due Days</label><input id="pastDueDays" value="45"></div>
+    </div>
+  </div>
+
+</div>
+<script>
+const qp=new URLSearchParams(window.location.search);
+function qpOr(k,d){const v=qp.get(k);return v&&v.trim()?v:d;}
+document.getElementById('fn').value=qpOr('firstName','Tony');
+document.getElementById('ln').value=qpOr('lastName','Smith');
+document.getElementById('em').value=qpOr('email','alex.johnson@email.com');
+
+function updateBadge(){
+  const v=document.getElementById('acctStatus').value;
+  const m={
+    active:['badge-active','✅ Active'],
+    partial:['badge-partial','◑ Partial Payment'],
+    pending:['badge-pending','◑ Pending'],
+    hold:['badge-pending','⏸ On Hold']
+  };
+  const b=m[v];
+  document.getElementById('badgeCont').innerHTML=b?`<span class="badge ${b[0]}">${b[1]}</span>`:'';
+}
+updateBadge();
+
+function selectBilling(el){
+  document.querySelectorAll('.billing-sys').forEach(b=>b.classList.remove('matched'));
+  el.classList.add('matched');
+  toast('Billing system confirmed: '+el.textContent);
+}
+
+function toast(msg){
+  const c=document.getElementById('tc');
+  const t=document.createElement('div');
+  t.className='toast';t.textContent=msg;c.appendChild(t);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('show')));
+  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),250);},3000);
+}
+
+window.updateBadge=updateBadge;
+window.selectBilling=selectBilling;
+window.toast=toast;
+</script>
+</body>
+</html>
